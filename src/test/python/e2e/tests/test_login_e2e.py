@@ -135,3 +135,17 @@ def test_TC7_empty_both(driver):
     login.assert_error("Bạn chưa nhập tên đăng nhập")
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập")
+@allure.id("TC8")
+@allure.title("TC8 - Username và password đều sai")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.negative
+def test_TC8_wrong_both(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(username="abc123", password="abc@123")
+    login.submit()
+    login.assert_invalid_credentials()
+
+
