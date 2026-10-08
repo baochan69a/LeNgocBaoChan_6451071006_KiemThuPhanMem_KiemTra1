@@ -287,3 +287,20 @@ def test_TC17_keep_login_but_wrong_pass(browser_factory):
     reopened.assert_login_page()
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng xuất")
+@allure.id("TC18")
+@allure.title("TC18 - Không truy cập lại trang chủ sau logout bằng Back")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.skipif(not VALID_PASS, reason=PASSWORD_SKIP_REASON)
+def test_TC18_back_after_logout(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(username=VALID_USER, password=require_valid_password())
+    login.submit()
+    DashboardPage(driver).assert_logged_in()
+    DashboardPage(driver).logout()
+    driver.back()
+    login.assert_login_page()
+
+
