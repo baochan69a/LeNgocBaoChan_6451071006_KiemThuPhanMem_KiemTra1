@@ -208,3 +208,20 @@ def test_TC12_username_only_spaces(driver):
     login.assert_error("Bạn chưa nhập tên đăng nhập")
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập")
+@allure.id("TC13")
+@allure.title("TC13 - Username dài 256 ký tự")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.negative
+def test_TC13_username_too_long(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(username="a" * 256, password="Sai@Pass#9999")
+    login.submit()
+    login.wait.until(
+        lambda _driver: any(message in login.body_text for message in INVALID_LOGIN_MESSAGES)
+    )
+    assert login.is_form_visible(), "Username quá dài nhưng không ở lại màn hình đăng nhập."
+
+
