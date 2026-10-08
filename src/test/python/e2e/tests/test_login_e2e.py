@@ -237,3 +237,17 @@ def test_TC14_password_masked(driver):
     login.assert_password_is_masked()
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập")
+@allure.id("TC15")
+@allure.title("TC15 - Đăng nhập sai bằng phím Enter")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.negative
+def test_TC15_wrong_login_with_enter(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(username=VALID_USER, password="Sai@Pass#9999")
+    login.submit_with_enter()
+    login.assert_invalid_credentials()
+
+
