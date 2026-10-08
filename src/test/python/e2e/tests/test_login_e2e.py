@@ -251,3 +251,17 @@ def test_TC15_wrong_login_with_enter(driver):
     login.assert_invalid_credentials()
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập")
+@allure.id("TC16")
+@allure.title("TC16 - Đăng nhập đúng bằng phím Enter")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.skipif(not VALID_PASS, reason=PASSWORD_SKIP_REASON)
+def test_TC16_login_with_enter(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(username=VALID_USER, password=require_valid_password())
+    login.submit_with_enter()
+    login.assert_logged_in()
+
+
