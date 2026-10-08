@@ -101,3 +101,24 @@ def test_TC5_keep_login(browser_factory):
     reopened.assert_logged_in()
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập duy trì phiên")
+@allure.id("TC6")
+@allure.title("TC6 - Không giữ đăng nhập sau khi mở lại trình duyệt")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.skipif(not VALID_PASS, reason=PASSWORD_SKIP_REASON)
+def test_TC6_no_keep_login(browser_factory):
+    create, close = browser_factory
+    profile = "tc6-profile"
+    login = LoginPage(create(profile_name=profile))
+    login.open()
+    login.fill(username=VALID_USER, password=require_valid_password())
+    login.submit()
+    login.assert_logged_in()
+    close(login.driver)
+
+    reopened = LoginPage(create(profile_name=profile))
+    reopened.open_home()
+    reopened.assert_login_page()
+
+
