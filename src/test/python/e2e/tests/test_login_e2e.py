@@ -357,3 +357,22 @@ def test_TC20_cross_browser(browser_factory, tmp_path):
             close(current.driver)
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Bảo mật đăng nhập")
+@allure.id("TC21")
+@allure.title("TC21 - Ngăn chặn SQL Injection")
+@allure.severity(allure.severity_level.CRITICAL)
+@pytest.mark.negative
+@pytest.mark.skipif(not RUN_RISKY, reason=RISKY_SKIP_REASON)
+def test_TC21_sql_injection(driver):
+    login = LoginPage(driver)
+    login.open()
+    injection = "' OR '1'='1"
+    login.fill(username=injection, password=injection)
+    login.submit()
+    login.assert_invalid_credentials()
+    body = login.body_text.lower()
+    for database_error in ("sql syntax", "database error", "stack trace", "mysql", "sql server"):
+        assert database_error not in body
+
+
