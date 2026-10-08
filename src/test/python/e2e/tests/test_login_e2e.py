@@ -23,3 +23,17 @@ RISKY_SKIP_REASON = "Ca kiểm thử rủi ro chỉ chạy khi RUN_RISKY=1."
 PASSWORD_SKIP_REASON = "Thiếu biến môi trường VALID_PASS."
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập")
+@allure.id("TC1")
+@allure.title("TC1 - Bỏ trống username")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.negative
+def test_TC1_empty_user(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(password="Sai@Pass#9999")
+    login.submit()
+    login.assert_error("Bạn chưa nhập tên đăng nhập")
+
+
