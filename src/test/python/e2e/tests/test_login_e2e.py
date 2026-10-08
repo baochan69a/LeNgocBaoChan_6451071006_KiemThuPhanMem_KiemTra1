@@ -194,3 +194,17 @@ def test_TC11_username_spaces_around(driver):
     allure.attach(result, name="Kết quả thực tế", attachment_type=allure.attachment_type.TEXT)
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập")
+@allure.id("TC12")
+@allure.title("TC12 - Username chỉ chứa dấu cách")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.negative
+def test_TC12_username_only_spaces(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(username="   ", password="Sai@Pass#9999")
+    login.submit()
+    login.assert_error("Bạn chưa nhập tên đăng nhập")
+
+
