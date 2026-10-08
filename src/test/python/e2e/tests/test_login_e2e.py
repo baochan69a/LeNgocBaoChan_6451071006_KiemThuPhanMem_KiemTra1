@@ -37,3 +37,17 @@ def test_TC1_empty_user(driver):
     login.assert_error("Bạn chưa nhập tên đăng nhập")
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập")
+@allure.id("TC2")
+@allure.title("TC2 - Bỏ trống password")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.negative
+def test_TC2_empty_pass(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(username=VALID_USER)
+    login.submit()
+    login.assert_error("Bạn chưa nhập mật khẩu")
+
+
