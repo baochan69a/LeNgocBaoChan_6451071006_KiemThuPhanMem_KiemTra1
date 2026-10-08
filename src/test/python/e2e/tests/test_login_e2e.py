@@ -316,3 +316,44 @@ def test_TC19_home_without_login(driver):
     login.assert_login_page()
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập đa trình duyệt")
+@allure.id("TC20")
+@allure.title("TC20 - Đăng nhập trên Chrome, Firefox và Edge")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.skipif(not VALID_PASS, reason=PASSWORD_SKIP_REASON)
+def test_TC20_cross_browser(browser_factory, tmp_path):
+    browsers = ("chrome", "firefox", "edge")
+    executables = {
+        "chrome": (
+            "chrome",
+            Path(r"C:\Program Files\Google\Chrome\Application\chrome.exe"),
+            Path(r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"),
+        ),
+        "firefox": ("firefox", Path(r"C:\Program Files\Mozilla Firefox\firefox.exe")),
+        "edge": (
+            "msedge",
+            Path(r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"),
+            Path(r"C:\Program Files\Microsoft\Edge\Application\msedge.exe"),
+        ),
+    }
+    missing = []
+    for browser in browsers:
+        executable, *paths = executables[browser]
+        if not shutil.which(executable) and not any(path.is_file() for path in paths):
+            missing.append(browser)
+    if missing:
+        pytest.skip(f"Chưa cài trình duyệt: {', '.join(missing)}")
+
+    create, close = browser_factory
+    for browser in browsers:
+        current = LoginPage(create(browser, f"{browser}-profile"))
+        try:
+            current.open()
+            current.fill(username=VALID_USER, password=require_valid_password())
+            current.submit()
+            current.assert_logged_in()
+        finally:
+            close(current.driver)
+
+
