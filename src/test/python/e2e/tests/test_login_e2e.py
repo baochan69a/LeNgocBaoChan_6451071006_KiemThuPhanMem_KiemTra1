@@ -225,3 +225,15 @@ def test_TC13_username_too_long(driver):
     assert login.is_form_visible(), "Username quá dài nhưng không ở lại màn hình đăng nhập."
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập")
+@allure.id("TC14")
+@allure.title("TC14 - Password được che")
+@allure.severity(allure.severity_level.MINOR)
+def test_TC14_password_masked(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(password="Sai@Pass#9999")
+    login.assert_password_is_masked()
+
+
