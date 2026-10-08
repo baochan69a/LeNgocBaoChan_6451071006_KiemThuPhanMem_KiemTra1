@@ -149,3 +149,18 @@ def test_TC8_wrong_both(driver):
     login.assert_invalid_credentials()
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập")
+@allure.id("TC9")
+@allure.title("TC9 - Password phân biệt chữ hoa và chữ thường")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.negative
+@pytest.mark.skipif(not VALID_PASS, reason=PASSWORD_SKIP_REASON)
+def test_TC9_pass_case_sensitive(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(username=VALID_USER, password=require_valid_password().upper())
+    login.submit()
+    login.assert_invalid_credentials()
+
+
