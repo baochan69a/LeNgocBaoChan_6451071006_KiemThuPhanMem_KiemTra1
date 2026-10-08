@@ -393,3 +393,33 @@ def test_TC22_xss(driver):
     login.assert_invalid_credentials()
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Bảo mật đăng nhập")
+@allure.id("TC23")
+@allure.title("TC23 - Phản hồi khi đăng nhập sai liên tục")
+@allure.severity(allure.severity_level.CRITICAL)
+@pytest.mark.negative
+@pytest.mark.skipif(not RUN_RISKY, reason=RISKY_SKIP_REASON)
+def test_TC23_many_wrong_attempts(driver):
+    login = LoginPage(driver)
+    login.open()
+    for attempt in range(5):
+        login.find(login.USERNAME).clear()
+        login.find(login.PASSWORD).clear()
+        login.fill(username=VALID_USER, password="Sai@Pass#9999")
+        login.submit()
+        login.wait.until(
+            lambda _driver: (
+                "không đúng" in login.body_text.lower()
+                or "captcha" in login.body_text.lower()
+                or "khóa" in login.body_text.lower()
+                or not login.is_form_visible()
+            )
+        )
+        body = login.body_text.lower()
+        assert login.is_form_visible(), "Sai mật khẩu nhưng đã vào được hệ thống."
+        assert (
+            "không đúng" in body or "captcha" in body or "khóa" in body
+        ), f"Lần thử {attempt + 1}: không tìm thấy phản hồi sai mật khẩu/captcha/khóa tài khoản."
+        if "captcha" in body or "khóa" in body:
+            break
