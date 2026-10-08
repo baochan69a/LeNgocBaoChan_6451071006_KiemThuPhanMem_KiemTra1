@@ -304,3 +304,15 @@ def test_TC18_back_after_logout(driver):
     login.assert_login_page()
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Bảo vệ trang yêu cầu đăng nhập")
+@allure.id("TC19")
+@allure.title("TC19 - Truy cập trang chủ khi chưa đăng nhập")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.negative
+def test_TC19_home_without_login(driver):
+    login = LoginPage(driver)
+    login.open_home()
+    login.assert_login_page()
+
+
