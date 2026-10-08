@@ -376,3 +376,20 @@ def test_TC21_sql_injection(driver):
         assert database_error not in body
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Bảo mật đăng nhập")
+@allure.id("TC22")
+@allure.title("TC22 - Không thực thi XSS trong username")
+@allure.severity(allure.severity_level.CRITICAL)
+@pytest.mark.negative
+@pytest.mark.skipif(not RUN_RISKY, reason=RISKY_SKIP_REASON)
+def test_TC22_xss(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(username="<script>alert(1)</script>", password="Sai@Pass#9999")
+    login.submit()
+    with pytest.raises(TimeoutException):
+        WebDriverWait(driver, 2).until(EC.alert_is_present())
+    login.assert_invalid_credentials()
+
+
