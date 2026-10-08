@@ -265,3 +265,25 @@ def test_TC16_login_with_enter(driver):
     login.assert_logged_in()
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập duy trì phiên")
+@allure.id("TC17")
+@allure.title("TC17 - Giữ đăng nhập nhưng password sai")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.negative
+def test_TC17_keep_login_but_wrong_pass(browser_factory):
+    create, close = browser_factory
+    profile = "tc17-profile"
+    login = LoginPage(create(profile_name=profile))
+    login.open()
+    login.fill(username=VALID_USER, password="Sai@Pass#9999")
+    login.enable_remember_me()
+    login.submit()
+    login.assert_invalid_credentials()
+    close(login.driver)
+
+    reopened = LoginPage(create(profile_name=profile))
+    reopened.open_home()
+    reopened.assert_login_page()
+
+
