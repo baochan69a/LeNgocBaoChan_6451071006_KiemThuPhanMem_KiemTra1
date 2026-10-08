@@ -164,3 +164,18 @@ def test_TC9_pass_case_sensitive(driver):
     login.assert_invalid_credentials()
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập")
+@allure.id("TC10")
+@allure.title("TC10 - Username viết hoa toàn bộ")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.skipif(not VALID_PASS, reason=PASSWORD_SKIP_REASON)
+def test_TC10_username_uppercase(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(username=VALID_USER.upper(), password=require_valid_password())
+    login.submit()
+    result = login.assert_login_denied_or_succeeded()
+    allure.attach(result, name="Kết quả thực tế", attachment_type=allure.attachment_type.TEXT)
+
+
