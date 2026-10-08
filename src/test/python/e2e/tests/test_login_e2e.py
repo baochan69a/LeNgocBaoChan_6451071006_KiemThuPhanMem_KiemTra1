@@ -122,3 +122,16 @@ def test_TC6_no_keep_login(browser_factory):
     reopened.assert_login_page()
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập")
+@allure.id("TC7")
+@allure.title("TC7 - Bỏ trống username và password")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.negative
+def test_TC7_empty_both(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.submit()
+    login.assert_error("Bạn chưa nhập tên đăng nhập")
+
+
