@@ -51,3 +51,17 @@ def test_TC2_empty_pass(driver):
     login.assert_error("Bạn chưa nhập mật khẩu")
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập")
+@allure.id("TC3")
+@allure.title("TC3 - Username đúng, password sai")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.negative
+def test_TC3_right_user_wrong_pass(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(username=VALID_USER, password="Sai@Pass#9999")
+    login.submit()
+    login.assert_invalid_credentials()
+
+
