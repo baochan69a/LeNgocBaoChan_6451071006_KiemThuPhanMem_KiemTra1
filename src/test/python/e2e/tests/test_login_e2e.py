@@ -179,3 +179,18 @@ def test_TC10_username_uppercase(driver):
     allure.attach(result, name="Kết quả thực tế", attachment_type=allure.attachment_type.TEXT)
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập")
+@allure.id("TC11")
+@allure.title("TC11 - Username có dấu cách ở hai đầu")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.skipif(not VALID_PASS, reason=PASSWORD_SKIP_REASON)
+def test_TC11_username_spaces_around(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(username=f" {VALID_USER} ", password=require_valid_password())
+    login.submit()
+    result = login.assert_login_denied_or_succeeded()
+    allure.attach(result, name="Kết quả thực tế", attachment_type=allure.attachment_type.TEXT)
+
+
