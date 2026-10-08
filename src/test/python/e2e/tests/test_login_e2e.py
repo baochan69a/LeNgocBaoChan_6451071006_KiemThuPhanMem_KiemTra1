@@ -65,3 +65,17 @@ def test_TC3_right_user_wrong_pass(driver):
     login.assert_invalid_credentials()
 
 
+@allure.epic("UTC E-Office")
+@allure.feature("Đăng nhập")
+@allure.id("TC4")
+@allure.title("TC4 - Username sai")
+@allure.severity(allure.severity_level.NORMAL)
+@pytest.mark.negative
+def test_TC4_wrong_user(driver):
+    login = LoginPage(driver)
+    login.open()
+    login.fill(username="huongthunguyen", password="Sai@Pass#9999")
+    login.submit()
+    login.assert_invalid_credentials()
+
+
